@@ -57,8 +57,11 @@ func initTracer() (*sdktrace.TracerProvider, error) {
 		return nil, err
 	}
 
+	sampler := sdktrace.ParentBased(sdktrace.TraceIDRatioBased(0.1))
+
 	tp := sdktrace.NewTracerProvider(
 		sdktrace.WithBatcher(exp),
+		sdktrace.WithSampler(sampler),
 		sdktrace.WithResource(resource.NewWithAttributes(
 			semconv.SchemaURL,
 			semconv.ServiceName("service-x"),

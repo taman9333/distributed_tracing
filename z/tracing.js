@@ -1,5 +1,6 @@
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
+const { ParentBasedSampler, TraceIdRatioBasedSampler } = require('@opentelemetry/sdk-trace-base');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { trace } = require('@opentelemetry/api');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
@@ -15,6 +16,9 @@ const provider = new NodeTracerProvider({
     [ATTR_SERVICE_NAME]: "service-z",
   }),
   spanProcessors: [new SimpleSpanProcessor(exporter)],
+  sampler: new ParentBasedSampler({
+    root: new TraceIdRatioBasedSampler(0.1),
+  })
 });
 registerInstrumentations({
   tracerProvider: provider,

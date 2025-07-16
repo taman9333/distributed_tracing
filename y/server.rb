@@ -12,11 +12,13 @@ OpenTelemetry::SDK.configure do |c|
   c.use 'OpenTelemetry::Instrumentation::Faraday'
 end
 
+OpenTelemetry.tracer_provider.sampler = OpenTelemetry::SDK::Trace::Samplers::TraceIdRatioBased.new(0.1)
+
 get '/y' do
   conn = ::Faraday.new('http://localhost:3002')
   res = conn.get('/z')
-  span = OpenTelemetry::Trace.current_span
   if res.status >= 400
+    span = OpenTelemetry::Trace.current_span
     span.status = OpenTelemetry::Trace::Status.error
     span.add_event(
       "Z failed with #{res.status}",

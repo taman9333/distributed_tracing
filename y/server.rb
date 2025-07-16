@@ -15,6 +15,17 @@ end
 get '/y' do
   conn = ::Faraday.new('http://localhost:3002')
   res = conn.get('/z')
+  span = OpenTelemetry::Trace.current_span
+  if res.status >= 400
+    span.status = OpenTelemetry::Trace::Status.error
+    span.add_event(
+      "Z failed with #{res.status}",
+      attributes: {
+        'http.status_code' => res.status,
+        'response.body' => res.body
+      }
+    )
+  end
   "Service Y received: #{res.body}"
 end
 

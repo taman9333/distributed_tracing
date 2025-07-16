@@ -1,37 +1,15 @@
-// const { NodeSDK } = require('@opentelemetry/sdk-node');
-
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { trace } = require('@opentelemetry/api');
-
-
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
 const { resourceFromAttributes } = require('@opentelemetry/resources');
 const { ATTR_SERVICE_NAME } = require('@opentelemetry/semantic-conventions');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
-// const {
-//   getNodeAutoInstrumentations,
-// } = require('@opentelemetry/auto-instrumentations-node');
-
-// const sdk = new NodeSDK({
-//   traceExporter: new OTLPTraceExporter({
-//     url: 'http://localhost:4318/v1/traces',
-//   }),
-//   resource: resourceFromAttributes({
-//     [ ATTR_SERVICE_NAME ]: "service-z",
-//     [ ATTR_SERVICE_VERSION ]: "1.0",
-//   }),
-//   instrumentations: [
-//     new HttpInstrumentation(), new ExpressInstrumentation()
-//   ],
-// });
-
-// sdk.start();
-
 
 const exporter = new OTLPTraceExporter({ url: 'http://localhost:4318/v1/traces' })
+
 const provider = new NodeTracerProvider({
   resource: new resourceFromAttributes({
     [ATTR_SERVICE_NAME]: "service-z",

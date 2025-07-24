@@ -1,0 +1,40 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+      grpc:
+        endpoint: 0.0.0.0:4317
+
+processors:
+  tail_sampling:
+    decision_wait: 10s
+    num_traces: 100
+    expected_new_traces_per_sec: 10
+    policies:
+      [
+        {
+          name: errors,
+          type: status_code,
+          status_code: { status_codes: [ERROR] }
+        },
+        {
+          name: probabilistic_25_percent,
+          type: probabilistic,
+          probabilistic: { sampling_percentage: 20 }
+        }
+      ]
+
+exporters:
+  otlp:
+    # endpoint: host.docker.internal:55556
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [tail_sampling]
+      exporters: [otlp]

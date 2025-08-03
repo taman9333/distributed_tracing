@@ -43,6 +43,11 @@ func main() {
 		fmt.Fprintf(w, "Service X received: %s", body)
 	})
 
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("ok"))
+	})
+
 	fmt.Println("Service X listening on port 3000")
 	log.Fatal(http.ListenAndServe(":3000", otelhttp.NewHandler(http.DefaultServeMux, "x-handler")))
 }

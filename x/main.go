@@ -57,7 +57,7 @@ func initTracer() (*sdktrace.TracerProvider, error) {
 		return nil, err
 	}
 
-	sampler := sdktrace.ParentBased(sdktrace.TraceIDRatioBased(0.1))
+	sampler := sdktrace.ParentBased(sdktrace.TraceIDRatioBased(0.3))
 
 	tp := sdktrace.NewTracerProvider(
 		sdktrace.WithBatcher(exp),

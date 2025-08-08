@@ -12,7 +12,7 @@ OpenTelemetry::SDK.configure do |c|
   c.use 'OpenTelemetry::Instrumentation::Faraday'
 end
 
-OpenTelemetry.tracer_provider.sampler = OpenTelemetry::SDK::Trace::Samplers::TraceIdRatioBased.new(0.1)
+OpenTelemetry.tracer_provider.sampler = OpenTelemetry::SDK::Trace::Samplers::TraceIdRatioBased.new(0.3)
 
 get '/y' do
   conn = ::Faraday.new('http://localhost:3002')

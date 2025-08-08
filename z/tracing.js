@@ -17,7 +17,7 @@ const provider = new NodeTracerProvider({
   }),
   spanProcessors: [new SimpleSpanProcessor(exporter)],
   sampler: new ParentBasedSampler({
-    root: new TraceIdRatioBasedSampler(0.1),
+    root: new TraceIdRatioBasedSampler(0.3),
   })
 });
 registerInstrumentations({

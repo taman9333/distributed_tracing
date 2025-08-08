@@ -33,9 +33,9 @@ processors:
             }
          },
         {
-          name: probabilistic_25_percent,
+          name: probabilistic_30_percent,
           type: probabilistic,
-          probabilistic: { sampling_percentage: 20 }
+          probabilistic: { sampling_percentage: 30 }
         }
       ]
 
